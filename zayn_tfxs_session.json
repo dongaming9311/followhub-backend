@@ -1,0 +1,36 @@
+{
+    "uuids": {
+        "phone_id": "2aa97f78-d600-44ab-b0c2-e35ebff43109",
+        "uuid": "c9b9011c-ec92-46db-8e6e-ac1fd761f059",
+        "client_session_id": "7281cdba-05b0-4375-9033-4f31549278c8",
+        "advertising_id": "858e72b0-cbd0-448f-933e-aa1ef1729ace",
+        "android_device_id": "android-77ed0a94aa0ffae4",
+        "request_id": "d73f0e3d-60f6-471b-a6a9-f9b92b82552d",
+        "tray_session_id": "8f5e5e5e-05ac-44c3-80d7-69688707ac44"
+    },
+    "mid": "abiQJQABAAEpjzF0XAYIQfaUyDSb",
+    "ig_u_rur": null,
+    "ig_www_claim": null,
+    "authorization_data": {
+        "ds_user_id": "41813089445",
+        "sessionid": "41813089445%3A463L0xMKT3dg2T%3A6%3AAYhq-j0ZUbhsmZ5pU4HuKKIlgHa2_KOCkbo03RziHg"
+    },
+    "cookies": {},
+    "last_login": 1773695252.9532187,
+    "device_settings": {
+        "android_version": 28,
+        "android_release": "9.0.0",
+        "dpi": "560dpi",
+        "resolution": "1440x2960",
+        "manufacturer": "samsung",
+        "device": "star2qltecs",
+        "model": "SM-G965F",
+        "cpu": "samsungexynos9810",
+        "app_version": "269.0.0.18.75"
+    },
+    "user_agent": "Instagram 385.0.0.47.74 Android (26/8.0.0; 480dpi; 1080x1920; OnePlus; 6T Dev; devitron; qcom; en_US; 378906843)",
+    "country": "US",
+    "country_code": 1,
+    "locale": "en_US",
+    "timezone_offset": -14400
+}
