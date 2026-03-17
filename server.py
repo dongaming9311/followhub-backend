@@ -34,7 +34,6 @@ DEVICES = [
     }
 ]
 
-# User sessions store
 users = {}
 
 class MiningSession:
@@ -68,13 +67,20 @@ class MiningSession:
             return "stopped"
         try:
             user_info = self.cl.user_info_by_username(target)
+            
+            # Private account check
             if user_info.is_private:
                 return "skip"
+            
+            # Already following check
             friendship = self.cl.user_friendship_v1(user_info.pk)
             if friendship.following:
                 return "already"
+            
+            # Follow karo
             self.cl.user_follow(user_info.pk)
             return "followed"
+            
         except LoginRequired:
             self.login()
             return self.safe_follow(target)
@@ -88,28 +94,50 @@ class MiningSession:
             for target in self.targets:
                 if not self.is_mining:
                     return
+                    
                 result = self.safe_follow(target)
+
+                # Sirf follow hone pe +4 coins
                 if result == "followed":
                     self.followed_count += 1
                     self.coins += 4
-                    print(f"{self.username} followed {target} +4 coins")
+                    print(f"{self.username} followed {target} | +4 coins | Total: {self.coins} coins")
                     time.sleep(random.uniform(4, 8))
+
+                    # 100 follows = 1 hour break
                     if self.followed_count % 100 == 0:
-                        print("100 follows! 1 hour break...")
+                        print(f"100 follows done! 1 hour break...")
                         for i in range(3600, 0, -60):
                             if not self.is_mining:
                                 return
                             time.sleep(60)
+
                 elif result == "already":
-                    print(f"Already followed {target}")
+                    print(f"Already followed {target} - 0 coins")
+
+                elif result == "skip":
+                    print(f"Private account {target} - 0 coins")
+
+                elif result == "error":
+                    print(f"Error on {target} - 0 coins")
+
                 elif result == "stopped":
                     return
+
             time.sleep(2)
 
 
 # ═══════════════════
 # API ROUTES
 # ═══════════════════
+
+@app.route('/')
+def home():
+    return jsonify({
+        'status': 'success',
+        'message': 'FollowHub Server Running!'
+    })
+
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
@@ -121,6 +149,14 @@ def api_login():
         return jsonify({
             'status': 'error',
             'message': 'Username aur password daalo!'
+        })
+
+    # Agar already logged in hai
+    if username in users:
+        return jsonify({
+            'status': 'success',
+            'message': 'Already logged in!',
+            'username': username
         })
 
     session = MiningSession(username, password)
@@ -153,6 +189,13 @@ def start_mining():
         })
 
     session = users[username]
+    
+    if session.is_mining:
+        return jsonify({
+            'status': 'success',
+            'message': 'Mining already running!'
+        })
+
     session.targets = targets
     session.is_mining = True
 
@@ -221,16 +264,11 @@ def place_order():
     session = users[username]
     coins_needed = quantity * 8
 
-    if use_gems:
-        return jsonify({
-            'status': 'error',
-            'message': 'Not enough gems!'
-        })
-    else:
+    if not use_gems:
         if session.coins < coins_needed:
             return jsonify({
                 'status': 'error',
-                'message': f'{coins_needed} coins chahiye!'
+                'message': f'{coins_needed} coins chahiye! Tumhare paas sirf {session.coins} hain.'
             })
         session.coins -= coins_needed
 
